@@ -1,0 +1,106 @@
+HTML:
+<header>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kreon">
+</header>
+
+<div class="container">
+  <div class="text-center">
+  <h1>Wikipedia API search </h1>
+  <h4> FCC project 6 </h4>
+  <a href="https://en.wikipedia.org/wiki/Special:Random" target="blank">
+  <img src='https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/200px-Wikipedia-logo-v2.svg.png'></br>  
+   </a>
+  <input class="from-control" id="searchTerm">
+  <button id="search" type="button" class="btn btn-primary"> Submit  </button>
+</div>
+ <ul id="output">
+   
+ </ul>  
+<div class="footer text-center">
+    <h5>Copyright © ReM Designworks 2018. All Rights Reserved </h5>
+      <p>
+    <a href="mailto:renganathan.sekar@gmail.com">
+      <i class="fa fa-envelope fa-fw"></i>
+    </a>
+    <a href="https://github.com/SRenganathan" target='_blank'>
+      <i class="fa fa-github fa-fw"></i>
+    </a>
+    <a href="https://www.linkedin.com/in/renganathan-sekar/" target='_blank'>
+      <i class="fa fa-linkedin"></i>
+    </a>
+    <a href="https://codepen.io/rangaji/" target='_blank'>
+      <i class="fa fa-codepen"></i>
+    </a>
+    <a href="https://www.freecodecamp.org/srenganathan" target='_blank'>
+    (<i class="fa fa-fire fa-fw"></i>)
+  </a>
+  </p>
+</div> 
+</div>
+
+CSS:
+body{
+  font-family: Kreon, Arial;
+}
+h1{
+  margin-top: 1.5em;
+  }
+h4{
+  margin-top: 1.0em;
+  }
+img{
+  margin-top: 1.0em;
+}
+#searchTerm{
+   margin-top: 1.5em;
+}
+input{
+  width: 60%;
+}
+button{
+  width: 15%;
+}
+
+.footer{
+  color: grey;
+  margin-top: 50%;
+  line-height: 20px;
+  padding-top: 10px;
+  padding-bottom: 6px;
+  position: relative;
+  text-align: center;
+}
+
+JS:
+
+$(document).ready(function(){
+//Run this when search is clicked  
+    $('#search').click(function(){
+    var searchTerm = $('#searchTerm').val();
+    var url= "https://en.wikipedia.org/w/api.php?action=opensearch&search="+ searchTerm + "&format=json&callback=?";
+    
+      $.ajax({
+        type: "GET",
+        url: url,
+        async: false,
+        dataType: "json",
+        success: function(data){
+         $('#output').empty();
+         for(var i=0; i<data[1].length;i++){
+            $('#output').append("<li><a href= "+data[3][i]+ " target='blank' >"+data[1][i] +"</a><p>"+data[2][i]+"</p></li>"); 
+         }  
+          $("#searchTerm").val('');
+        },
+        error: function(errorMessage){
+          alert("Oops, Something went wrong!");
+        }     
+  });
+       
+    }); 
+      $("#searchTerm").keypress(function(e){
+    if(e.which==13){
+      $("#search").click();
+    }  
+    }); 
+  });  
